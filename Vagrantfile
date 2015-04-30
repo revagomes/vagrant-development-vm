@@ -15,6 +15,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--memory", "2048"]
+    vb.customize ["modifyvm", :id, "--cpus", "2"]
   end
 
   config.vm.network :private_network, ip: "33.33.33.40"
@@ -32,8 +33,11 @@ Vagrant.configure("2") do |config|
   # NFS sharing does not work on windows, so if this is windows don't try to start it.
   require 'rbconfig'
 
+  #config.vm.synced_folder ".", "/vagrant", :disabled => true
+
   if not is_windows
     config.vm.synced_folder "www", "/var/www", :nfs => true
+    config.vm.synced_folder "/home/revagomes/Sites", "/var/www", :nfs => true
   else
     # Uncomment this for windows file sharing. When using windows file sharing, symlinks will not work.
     # config.vm.synced_folder "www", "/var/www"
